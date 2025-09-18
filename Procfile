@@ -1,1 +1,1 @@
-web: jupyter notebook --config=.jupyter/jupyter_config.py --port=$PORT --NotebookApp.allow_origin='*'
+web: jupyter notebook --ip=0.0.0.0 --port=$PORT --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password='' --NotebookApp.allow_origin='*' --NotebookApp.default_url='/notebooks/lab_notebook.ipynb' --NotebookApp.terminals_enabled=False

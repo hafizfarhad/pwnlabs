@@ -4,25 +4,25 @@ c = get_config()
 # Security and interface settings
 c.NotebookApp.allow_root = True
 c.NotebookApp.ip = '0.0.0.0'
+c.NotebookApp.port = 8888
 c.NotebookApp.open_browser = False
 c.NotebookApp.token = ''
 c.NotebookApp.password = ''
 
-# Hide system and configuration files from file browser
+# Disable file browser and hide system files
 c.ContentsManager.hide_globs = [
     '.*', '*.pyc', '*.pyo', '__pycache__',
     'Dockerfile', 'Procfile', 'requirements.txt', 
     'README.md', 'app.json', '.python-version',
-    'utils.py', 'jupyter_config.py', 'index.html'
+    'utils.py'
 ]
 
-# Set default file to open
+# Set default to open the lab notebook directly
 c.NotebookApp.default_url = '/notebooks/lab_notebook.ipynb'
 
-# Disable terminals for security
+# Disable terminals and other potentially dangerous features
 c.NotebookApp.terminals_enabled = False
-c.NotebookApp.shutdown_no_activity_timeout = 1800  # 30 minutes
+c.LabApp.terminals_enabled = False
 
 # Additional security
 c.NotebookApp.disable_check_xsrf = False
-c.NotebookApp.allow_remote_access = True
