@@ -1,0 +1,22 @@
+{
+  "name": "AI Security Lab - Adversarial Basics",
+  "description": "Interactive Jupyter Lab for learning adversarial attacks on image classifiers",
+  "keywords": ["ai-security", "adversarial-attacks", "jupyter", "pytorch", "machine-learning"],
+  "stack": "container",
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "addons": [],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "env": {
+    "JUPYTER_ENABLE_LAB": "yes",
+    "LAB_NAME": "adversarial-evasion-image-classifier"
+  }
+}
