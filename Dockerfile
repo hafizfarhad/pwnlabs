@@ -1,32 +1,28 @@
-# Heroku-optimized Dockerfile for AI Security Lab
-FROM jupyter/scipy-notebook:python-3.9
-
-# Switch to root for installations
-USER root
-
-# Install essential packages only (keep it lightweight)
-RUN pip install --no-cache-dir \
-    torch==2.0.0 \
-    torchvision==0.15.0 \
-    --index-url https://download.pytorch.org/whl/cpu
-
-# Copy lab materials
-COPY lab_notebook.ipynb /home/jovyan/work/
-COPY utils.py /home/jovyan/work/
-COPY README.md /home/jovyan/work/
-
-# Set permissions
-RUN chown -R jovyan:users /home/jovyan/work/
-
-# Switch back to jovyan
-USER jovyan
+# Simple Python-based Dockerfile for Heroku
+FROM python:3.9-slim
 
 # Set working directory
-WORKDIR /home/jovyan/work
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements and install Python packages
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy lab materials
+COPY . .
+
+# Create non-root user for security
+RUN useradd -m -s /bin/bash labuser && chown -R labuser:labuser /app
+USER labuser
 
 # Use Heroku's PORT environment variable
 ENV PORT=8888
 EXPOSE $PORT
 
-# Heroku-compatible startup
-CMD jupyter lab --ip=0.0.0.0 --port=$PORT --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password='' --NotebookApp.allow_origin='*'
+# Heroku-compatible startup command
+CMD jupyter lab --ip=0.0.0.0 --port=$PORT --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password='' --NotebookApp.allow_origin='*' --NotebookApp.allow_remote_access=True
